@@ -1,0 +1,41 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Alter form form_system_site_information_settings.
+ */
+function siteapi_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['siteapidetails'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Site Api Details'),
+  ];
+  $site_api_key = \Drupal::config('siteapi.details')->get('siteapikey');
+  $form['siteapidetails']['siteapikey'] = [
+    '#type' => 'textfield',
+    '#title' => t('Site API Key'),
+	'#default_value' => $site_api_key ? $site_api_key : 'No API Key yet',
+  ];
+  if (!empty($site_api_key)) {
+    $form['actions']['submit']['#value'] = t('Update Configuration');
+  }
+  $form['#submit'][] = 'siteapi_submit';
+}
+
+/**
+ * Additonal functionally after form submission.
+ */
+function siteapi_submit(&$form, FormStateInterface $form_state) {
+  $site_api_key = $form_state->getValue('siteapikey');
+  $config = \Drupal::service('config.factory')->getEditable('siteapi.details');
+  if (!empty($site_api_key) && $site_api_key !== 'No API Key yet') {
+    if ($site_api_key ===  $config->get('siteapikey')) {
+      return;
+    }
+    $config->set('siteapikey', $site_api_key)->save();
+    drupal_set_message(t("Site API Key has been saved with '@siteapikey' value", ['@siteapikey' => $site_api_key]));
+  }
+  else {
+    $config->clear('siteapikey')->save();
+  }
+}

@@ -1,0 +1,15 @@
+# Register Controller Page node to JSON.
+siteapi.page_json:
+  path: '/page_json/{siteapikey}/{node}'
+  defaults:
+    _title: 'Page Node JSON'
+    _controller: '\Drupal\siteapi\Controller\PageNodeJSONController::getPageJSON'
+    arguments: ['@config.factory', '@serializer']
+  requirements:
+    _permission: 'access content'
+    node: \d+
+  methods: [GET]
+  options:
+    parameters:
+      node:
+        type: page_type

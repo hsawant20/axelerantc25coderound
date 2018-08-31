@@ -1,0 +1,12 @@
+services:
+  # Register custom param converter service.
+  siteapi.paramconverter:
+    class: Drupal\siteapi\Routing\SiteAPIParamConverter
+    tags:
+      - { name: paramconverter }
+
+  # Register custom route subscriber service.
+  siteapi.route_subscriber:
+    class: Drupal\siteapi\Routing\SiteAPIRouteSubscriber
+    tags:
+      - { name: event_subscriber }

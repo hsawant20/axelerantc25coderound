@@ -1,0 +1,8 @@
+name: Site API
+type: module
+description: Adds Key field for Site API on Site Information" form and provides a URL that responds with a JSON representation of a given node with the content type "page" only if the previously submitted API Key and a node id (nid) of an appropriate node are present.
+package: custom
+configure: siteapi.details
+core: '8.x'
+dependencies:
+  - drupal:serialization
